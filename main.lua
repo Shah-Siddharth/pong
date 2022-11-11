@@ -1,3 +1,4 @@
+require("components.Ball")
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -8,6 +9,8 @@ function love.load()
         resizable = false,
         vsync = true
     })
+
+    ball = Ball:init(WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 5, 10, 10)
 end
 
 function love.update(dt)
@@ -18,6 +21,7 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
     end
+
 end
 
 function love.draw()
@@ -28,4 +32,6 @@ function love.draw()
         WINDOW_WIDTH,
         "center"
     )
+
+    ball:render()
 end
