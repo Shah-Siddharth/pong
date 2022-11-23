@@ -17,6 +17,8 @@ function love.load()
     
     player1 = Paddle:init(10, 30, 10, 50)
     player2 = Paddle:init(WINDOW_WIDTH-10-10, 30, 10, 50)
+    
+    gameState = 'start'
 end
 
 function love.update(dt)
@@ -41,11 +43,22 @@ function love.update(dt)
 
     player1:update(dt)
     player2:update(dt)
+    
+    if gameState == 'play' then
+        ball:update(dt)
+    end
 end
 
 function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
+    elseif key == 'enter' or key == 'return' then
+        if gameState == 'start' then
+            gameState = 'play'
+        else
+            gameState = 'start'
+            ball:reset()
+        end
     end
 
 end
