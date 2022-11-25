@@ -4,7 +4,10 @@ require("components.Paddle")
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 
+BALL_WIDTH = 10
+
 PADDLE_SPEED = 200
+PADDLE_WIDTH = 10
 
 function love.load()
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -12,6 +15,8 @@ function love.load()
         resizable = false,
         vsync = true
     })
+
+    math.randomseed(os.time())
 
     ball = Ball:init(WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 5, 10, 10)
     
@@ -22,6 +27,18 @@ function love.load()
 end
 
 function love.update(dt)
+
+    if gameState == 'play' then
+        if ball:collides(player1) then
+            ball.dx = -ball.dx * 1.25
+            ball.x = player1.x + PADDLE_WIDTH
+        end
+
+        if ball:collides(player2) then
+            ball.dx = -ball.dx * 1.25
+            ball.x = player2.x - BALL_WIDTH
+        end
+    end
 
     -- player1 movement
     if love.keyboard.isDown('w') then
