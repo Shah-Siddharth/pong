@@ -18,10 +18,15 @@ function love.load()
 
     math.randomseed(os.time())
 
+    scoreFont = love.graphics.newFont(25)
+
+
     ball = Ball:init(WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 5, 10, 10)
-    
     player1 = Paddle:init(10, 30, 10, 50)
     player2 = Paddle:init(WINDOW_WIDTH-10-10, 30, 10, 50)
+
+    player1Score = 0
+    player2Score = 0
     
     gameState = 'start'
 end
@@ -77,7 +82,12 @@ function love.keypressed(key)
             ball:reset()
         end
     end
+end
 
+function displayScore()
+    love.graphics.setFont(scoreFont)
+    love.graphics.print(tostring(player1Score), 100, WINDOW_HEIGHT/3)
+    love.graphics.print(tostring(player2Score), WINDOW_WIDTH-100, WINDOW_HEIGHT/3)
 end
 
 function love.draw()
@@ -88,6 +98,8 @@ function love.draw()
         WINDOW_WIDTH,
         "center"
     )
+
+    displayScore()
 
     ball:render()
     player1:render()
