@@ -43,6 +43,32 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.25
             ball.x = player2.x - BALL_WIDTH
         end
+
+        if ball.x < 0 then
+            player2Score = player2Score + 1
+
+            if player2Score == 10 then
+                gameState = 'end'
+                winningPlayer = 2
+            else
+                gameState = 'serve'
+                servingPlayer = 1
+                ball:reset()
+            end
+        end
+
+        if ball.x > WINDOW_WIDTH then
+            player1Score = player1Score + 1
+            
+            if player1Score == 10 then
+                gameState = 'end'
+                winningPlayer = 1
+            else
+                gameState = 'serve'
+                servingPlayer = 2
+                ball:reset()
+            end
+        end
     end
 
     -- player1 movement
@@ -98,6 +124,15 @@ function love.draw()
         WINDOW_WIDTH,
         "center"
     )
+
+    if gameState == 'serve' then
+        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve", 
+            0, 
+            25,
+            WINDOW_WIDTH,
+            'center'
+        )
+    end
 
     displayScore()
 
