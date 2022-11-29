@@ -25,7 +25,7 @@ function love.load()
     player1 = Paddle:init(10, 30, 10, 50)
     player2 = Paddle:init(WINDOW_WIDTH-10-10, 30, 10, 50)
 
-    player1Score = 0
+    player1Score = 9
     player2Score = 0
     
     gameState = 'start'
@@ -103,8 +103,13 @@ function love.keypressed(key)
     elseif key == 'enter' or key == 'return' then
         if gameState == 'start' then
             gameState = 'play'
-        else
+        elseif gameState == 'end' then
             gameState = 'start'
+            ball:reset()
+            player1Score = 0
+            player1Score = 0
+        elseif gameState == 'serve' then
+            gameState = 'play'
             ball:reset()
         end
     end
@@ -132,8 +137,16 @@ function love.draw()
             WINDOW_WIDTH,
             'center'
         )
-    end
+    elseif gameState == 'end' then
+        love.graphics.printf('Player ' .. tostring(winningPlayer) .. 'wins!',
+            0,
+            25,
+            WINDOW_WIDTH,
+            'center'
+        )
 
+        love.graphics.printf('Press Enter to restart', 0, 35, WINDOW_WIDTH, 'center')
+    end
     displayScore()
 
     ball:render()
