@@ -1,12 +1,12 @@
 require("components.Ball")
 require("components.Paddle")
 
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 1024
+WINDOW_HEIGHT = 576
 
 BALL_WIDTH = 10
 
-PADDLE_SPEED = 200
+PADDLE_SPEED = 250
 PADDLE_WIDTH = 10
 
 function love.load()
@@ -18,7 +18,8 @@ function love.load()
 
     math.randomseed(os.time())
 
-    scoreFont = love.graphics.newFont(25)
+    largeFont = love.graphics.newFont('fonts/AtlantisInternational.ttf', 60)
+    smallFont = love.graphics.newFont('fonts/AtlantisInternational.ttf', 25)
 
 
     ball = Ball:init(WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 5, 10, 10)
@@ -107,7 +108,7 @@ function love.keypressed(key)
             gameState = 'start'
             ball:reset()
             player1Score = 0
-            player1Score = 0
+            player2Score = 0
         elseif gameState == 'serve' then
             gameState = 'play'
             ball:reset()
@@ -116,36 +117,54 @@ function love.keypressed(key)
 end
 
 function displayScore()
-    love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score), 100, WINDOW_HEIGHT/3)
-    love.graphics.print(tostring(player2Score), WINDOW_WIDTH-100, WINDOW_HEIGHT/3)
+    love.graphics.setFont(largeFont)
+    love.graphics.print(tostring(player1Score), WINDOW_WIDTH/2 - 100, WINDOW_HEIGHT/2 - 50)
+    love.graphics.print(tostring(player2Score), WINDOW_WIDTH/2 + 100 - largeFont:getWidth(tostring(player2Score)), WINDOW_HEIGHT/2 - 50)
 end
 
 function love.draw()
-    love.graphics.printf(
-        "Pong!",
-        0,
-        WINDOW_HEIGHT/2 - 6,
-        WINDOW_WIDTH,
-        "center"
-    )
-
+    love.graphics.clear(40/255, 45/255, 52/255, 1)
+    
     if gameState == 'serve' then
-        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve", 
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Press Enter to serve', 
             0, 
-            25,
+            25 + largeFont:getHeight() + 10,
             WINDOW_WIDTH,
             'center'
         )
+    
     elseif gameState == 'end' then
-        love.graphics.printf('Player ' .. tostring(winningPlayer) .. 'wins!',
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!',
             0,
             25,
             WINDOW_WIDTH,
             'center'
         )
 
-        love.graphics.printf('Press Enter to restart', 0, 35, WINDOW_WIDTH, 'center')
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Press Enter to restart',
+            0,
+            25 + largeFont:getHeight() + 10,
+            WINDOW_WIDTH, 'center'
+        )
+
+    elseif gameState == 'start' then
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Welcome to Pong!',
+            0,
+            25,
+            WINDOW_WIDTH,
+            'center'
+        )
+
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Press Enter to start',
+            0,
+            25 + largeFont:getHeight() + 10,
+            WINDOW_WIDTH, 'center'
+        )
     end
     displayScore()
 
