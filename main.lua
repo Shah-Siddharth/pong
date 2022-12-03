@@ -21,6 +21,11 @@ function love.load()
     largeFont = love.graphics.newFont('fonts/AtlantisInternational.ttf', 60)
     smallFont = love.graphics.newFont('fonts/AtlantisInternational.ttf', 25)
 
+    sounds = {
+        ['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'static'),
+        ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav', 'static'),
+        ['score'] = love.audio.newSource('sounds/score.wav', 'static')
+    }
 
     ball = Ball:init(WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 5, 10, 10)
     player1 = Paddle:init(10, 30, 10, 50)
@@ -38,15 +43,21 @@ function love.update(dt)
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.25
             ball.x = player1.x + PADDLE_WIDTH
+            
+            sounds['paddle_hit']:play()
         end
 
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.25
             ball.x = player2.x - BALL_WIDTH
+
+            sounds['paddle_hit']:play()
         end
 
         if ball.x < 0 then
             player2Score = player2Score + 1
+
+            sounds['score']:play()
 
             if player2Score == 10 then
                 gameState = 'end'
@@ -60,6 +71,8 @@ function love.update(dt)
 
         if ball.x > WINDOW_WIDTH then
             player1Score = player1Score + 1
+
+            sounds['score']:play()
             
             if player1Score == 10 then
                 gameState = 'end'

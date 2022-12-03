@@ -9,7 +9,7 @@ function Ball:init(x, y, width, height)
     newBall.y = y
     newBall.width = width
     newBall.height = height
-    newBall.dx = math.random(2) == 1 and -50 or 50
+    newBall.dx = math.random(2) == 1 and -75 or 75
     newBall.dy = math.random(2) == 1 and -100 or 100
     
     return newBall
@@ -18,7 +18,7 @@ end
 function Ball:reset()
     self.x = WINDOW_WIDTH/2 - self.width/2
     self.y = WINDOW_HEIGHT/2 - self.height/2
-    self.dx =  math.random(2) == 1 and -50 or 50
+    self.dx = math.random(2) == 1 and -75 or 75
     self.dy = math.random(2) == 1 and -100 or 100
 end
 
@@ -39,11 +39,13 @@ function Ball:update(dt)
     self.y = self.y + self.dy * dt
     
     if self.y <= 0 then
+        sounds['wall_hit']:play()
         self.y = 0
         self.dy = -self.dy
     end
     
     if self.y >= WINDOW_HEIGHT - self.height then
+        sounds['wall_hit']:play()
         self.y = WINDOW_HEIGHT - self.height
         self.dy = -self.dy
     end
