@@ -6,7 +6,7 @@ WINDOW_HEIGHT = 576
 
 BALL_WIDTH = 10
 
-PADDLE_SPEED = 250
+PADDLE_SPEED = 350
 PADDLE_WIDTH = 10
 
 function love.load()
@@ -31,7 +31,7 @@ function love.load()
     player1 = Paddle:init(10, 30, 10, 50)
     player2 = Paddle:init(WINDOW_WIDTH-10-10, 30, 10, 50)
 
-    player1Score = 9
+    player1Score = 0
     player2Score = 0
     
     gameState = 'start'
@@ -40,6 +40,8 @@ end
 function love.update(dt)
 
     if gameState == 'play' then
+
+        -- collision with paddles
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.25
             ball.x = player1.x + PADDLE_WIDTH
@@ -54,6 +56,7 @@ function love.update(dt)
             sounds['paddle_hit']:play()
         end
 
+        -- player 2 scores
         if ball.x < 0 then
             player2Score = player2Score + 1
 
@@ -66,9 +69,11 @@ function love.update(dt)
                 gameState = 'serve'
                 servingPlayer = 1
                 ball:reset()
+                ball.dx = math.abs(ball.dx)
             end
         end
 
+        -- player 1 scores
         if ball.x > WINDOW_WIDTH then
             player1Score = player1Score + 1
 
@@ -81,6 +86,7 @@ function love.update(dt)
                 gameState = 'serve'
                 servingPlayer = 2
                 ball:reset()
+                ball.dx = -math.abs(ball.dx)
             end
         end
     end
@@ -124,7 +130,6 @@ function love.keypressed(key)
             player2Score = 0
         elseif gameState == 'serve' then
             gameState = 'play'
-            ball:reset()
         end
     end
 end
@@ -139,6 +144,14 @@ function love.draw()
     love.graphics.clear(40/255, 45/255, 52/255, 1)
     
     if gameState == 'serve' then
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve",
+            0,
+            25,
+            WINDOW_WIDTH,
+            'center'
+        )
+        
         love.graphics.setFont(smallFont)
         love.graphics.printf('Press Enter to serve', 
             0, 
@@ -176,7 +189,8 @@ function love.draw()
         love.graphics.printf('Press Enter to start',
             0,
             25 + largeFont:getHeight() + 10,
-            WINDOW_WIDTH, 'center'
+            WINDOW_WIDTH,
+            'center'
         )
     end
     displayScore()
