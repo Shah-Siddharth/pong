@@ -19,9 +19,6 @@ function love.load()
 
     love.window.setTitle('Pong')
 
-    icon = love.image.newImageData('pong-icon.png')
-    love.window.setIcon(icon)
-
     math.randomseed(os.time())
 
     largeFont = love.graphics.newFont('fonts/AtlantisInternational.ttf', 60)
