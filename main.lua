@@ -8,6 +8,7 @@ BALL_WIDTH = 10
 
 PADDLE_SPEED = 350
 PADDLE_WIDTH = 10
+PADDLE_HEIGHT = 50
 
 function love.load()
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -15,6 +16,11 @@ function love.load()
         resizable = false,
         vsync = true
     })
+
+    love.window.setTitle('Pong')
+
+    icon = love.image.newImageData('pong-icon.png')
+    love.window.setIcon(icon)
 
     math.randomseed(os.time())
 
@@ -28,8 +34,8 @@ function love.load()
     }
 
     ball = Ball:init(WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 5, 10, 10)
-    player1 = Paddle:init(10, 30, 10, 50)
-    player2 = Paddle:init(WINDOW_WIDTH-10-10, 30, 10, 50)
+    player1 = Paddle:init(10, 30, PADDLE_WIDTH, PADDLE_HEIGHT)
+    player2 = Paddle:init(WINDOW_WIDTH-10-PADDLE_WIDTH, 30, PADDLE_WIDTH, PADDLE_HEIGHT)
 
     player1Score = 0
     player2Score = 0
