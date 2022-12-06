@@ -15,6 +15,7 @@ An implementation of Atari's classic [Pong](https://en.wikipedia.org/wiki/Pong) 
 ```
 love .
 ```
+Use 'W' and 'S' keys to control Player 1 and Up and Down Arrow keys to control Player 2
 
 ## Libraries / Dependencies
 - [LÖVE](https://love2d.org/) - zlib/libpng license
